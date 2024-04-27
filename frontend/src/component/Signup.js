@@ -15,7 +15,7 @@ import ChipInput from "material-ui-chip-input";
 import FaceIcon from "@material-ui/icons/Face";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/material.css";
-
+import DobInput from "../lib/DobInput";
 import PasswordInput from "../lib/PasswordInput";
 import EmailInput from "../lib/EmailInput";
 import FileUploadInput from "../lib/FileUploadInput";
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Login = (props) => {
+const Signup = (props) => {
   const classes = useStyles();
   const setPopup = useContext(SetPopupContext);
 
@@ -52,6 +52,7 @@ const Login = (props) => {
     profile: "",
     bio: "",
     contactNumber: "",
+    dob:"",
   });
 
   const [phone, setPhone] = useState("");
@@ -72,6 +73,11 @@ const Login = (props) => {
     },
     name: {
       untouched: true,
+      required: true,
+      error: false,
+      message: "",
+    },
+    dob: {
       required: true,
       error: false,
       message: "",
@@ -162,6 +168,7 @@ const Login = (props) => {
         tmpErrorHandler[obj] = inputErrorHandler[obj];
       }
     });
+    
 
     let updatedDetails = {
       ...signupDetails,
@@ -217,7 +224,12 @@ const Login = (props) => {
       });
     }
   };
-
+  const handleDobChange = (dob) => {
+    setSignupDetails({
+      ...signupDetails,
+      dob: dob, // Update dob in signupDetails
+    });
+  };
   return loggedin ? (
     <Redirect to="/" />
   ) : (
@@ -289,9 +301,19 @@ const Login = (props) => {
             }}
           />
         </Grid>
+       
         {signupDetails.type === "applicant" ? (
           <>
-
+           <Grid item>
+           <DobInput
+            label="Date of Birth"
+            className={classes.inputBox}
+            value={signupDetails.dob}
+            onChange={handleDobChange} // Pass handleDobChange as onChange prop
+            error={inputErrorHandler.dob.error} // Set error state if needed
+            helperText={inputErrorHandler.dob.message} // Provide helper text if needed
+          />
+          </Grid>
             <Grid item>
               <ChipInput
                 className={classes.inputBox}
@@ -364,4 +386,4 @@ const Login = (props) => {
   );
 };
 
-export default Login;
+export default Signup;

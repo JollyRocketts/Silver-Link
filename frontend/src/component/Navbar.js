@@ -34,7 +34,7 @@ const Navbar = (props) => {
     <AppBar position="fixed">
       <Toolbar>
         <Typography variant="h6" className={classes.title}>
-          Job Portal
+          SilverLink
         </Typography>
         {isAuth() ? (
           userType() === "recruiter" ? (

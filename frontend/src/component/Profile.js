@@ -30,8 +30,6 @@ const Profile = (props) => {
   const [profileDetails, setProfileDetails] = useState({
     name: "",
     skills: [],
-    resume: "",
-    profile: "",
   });
 
   useEffect(() => {
@@ -68,7 +66,6 @@ const Profile = (props) => {
 
   const handleUpdate = () => {
     let updatedDetails = { ...profileDetails };
-    delete updatedDetails.education; // Remove education from updatedDetails
 
     axios
       .put(apiList.user, updatedDetails, {
@@ -152,26 +149,7 @@ const Profile = (props) => {
                   fullWidth
                 />
               </Grid>
-              <Grid item>
-                <FileUploadInput
-                  className={classes.inputBox}
-                  label="Resume (.pdf)"
-                  icon={<DescriptionIcon />}
-                  uploadTo={apiList.uploadResume}
-                  handleInput={handleInput}
-                  identifier={"resume"}
-                />
-              </Grid>
-              <Grid item>
-                <FileUploadInput
-                  className={classes.inputBox}
-                  label="Profile Photo (.jpg/.png)"
-                  icon={<FaceIcon />}
-                  uploadTo={apiList.uploadProfileImage}
-                  handleInput={handleInput}
-                  identifier={"profile"}
-                />
-              </Grid>
+              
             </Grid>
             <Button
               variant="contained"

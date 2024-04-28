@@ -105,6 +105,8 @@ const Signup = (props) => {
 
   const handleLogin = () => {
     const tmpErrorHandler = {};
+    
+    // Validate input fields including dob
     Object.keys(inputErrorHandler).forEach((obj) => {
       if (inputErrorHandler[obj].required && inputErrorHandler[obj].untouched) {
         tmpErrorHandler[obj] = {
@@ -117,14 +119,16 @@ const Signup = (props) => {
         tmpErrorHandler[obj] = inputErrorHandler[obj];
       }
     });
-
+  
+    // Check if all fields are verified
     const verified = !Object.keys(tmpErrorHandler).some((obj) => {
       return tmpErrorHandler[obj].error;
     });
+  
 
     if (verified) {
       axios
-        .post(apiList.signup,signupDetails)
+        .post(apiList.signup, signupDetails)
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
@@ -145,6 +149,7 @@ const Signup = (props) => {
           console.log(err.response);
         });
     } else {
+      // If any field is not verified, set error messages and display popup
       setInputErrorHandler(tmpErrorHandler);
       setPopup({
         open: true,
@@ -170,32 +175,15 @@ const Signup = (props) => {
     });
     
 
-    let updatedDetails = {
-      ...signupDetails,
-    };
-    if (phone !== "") {
-      updatedDetails = {
-        ...signupDetails,
-        contactNumber: `+${phone}`,
-      };
-    } else {
-      updatedDetails = {
-        ...signupDetails,
-        contactNumber: "",
-      };
-    }
-
-    setSignupDetails(updatedDetails);
 
     const verified = !Object.keys(tmpErrorHandler).some((obj) => {
       return tmpErrorHandler[obj].error;
     });
 
-    console.log(updatedDetails);
 
     if (verified) {
       axios
-        .post(apiList.signup, updatedDetails)
+        .post(apiList.signup)
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);

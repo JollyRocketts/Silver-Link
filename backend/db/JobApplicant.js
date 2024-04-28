@@ -22,7 +22,10 @@ let schema = new mongoose.Schema(
         msg: "Invalid rating",
       },
     },
-
+    dob: {
+      type: Date,
+      required: true,
+    },
     profile: {
       type: String,
     },

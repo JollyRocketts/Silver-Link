@@ -36,6 +36,7 @@ router.post("/signup", (req, res) => {
               rating: data.rating,
               resume: data.resume,
               profile: data.profile,
+              dob:data.dob
             });
 
       userDetails

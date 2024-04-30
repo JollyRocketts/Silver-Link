@@ -9,9 +9,6 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import ChipInput from "material-ui-chip-input";
-import FileUploadInput from "../lib/FileUploadInput";
-import DescriptionIcon from "@material-ui/icons/Description";
-import FaceIcon from "@material-ui/icons/Face";
 
 import { SetPopupContext } from "../App";
 

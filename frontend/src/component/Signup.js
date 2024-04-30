@@ -149,7 +149,6 @@ const Signup = (props) => {
           console.log(err.response);
         });
     } else {
-      // If any field is not verified, set error messages and display popup
       setInputErrorHandler(tmpErrorHandler);
       setPopup({
         open: true,
@@ -180,10 +179,15 @@ const Signup = (props) => {
       return tmpErrorHandler[obj].error;
     });
 
-
     if (verified) {
+      // Construct the data object to send to the backend
+      const data = {
+        ...signupDetails, // Include signupDetails
+        type: "recruiter", // Ensure type is set to "recruiter"
+      };
+  
       axios
-        .post(apiList.signup)
+        .post(apiList.signup, data) // Pass the data object to the POST request
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
@@ -212,6 +216,7 @@ const Signup = (props) => {
       });
     }
   };
+  
   const handleDobChange = (dob) => {
     setSignupDetails({
       ...signupDetails,

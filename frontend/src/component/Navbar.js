@@ -69,6 +69,12 @@ const Navbar = (props) => {
               >
                 Applications
               </Button>
+              <Button
+                color="inherit"
+                onClick={() => handleClick("/community")}
+              >
+                Community
+              </Button>
               <Button color="inherit" onClick={() => handleClick("/profile")}>
                 Profile
               </Button>

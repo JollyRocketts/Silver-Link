@@ -17,6 +17,7 @@ import AcceptedApplicants from "./component/recruiter/AcceptedApplicants";
 import RecruiterProfile from "./component/recruiter/Profile";
 import MessagePopup from "./lib/MessagePopup";
 import isAuth, { userType } from "./lib/isAuth";
+import Community from "./component/Community";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -73,6 +74,9 @@ function App() {
                 ) : (
                   <Profile />
                 )}
+              </Route>
+              <Route exact path="/community">
+                <Community />
               </Route>
               <Route exact path="/addjob">
                 <CreateJobs />

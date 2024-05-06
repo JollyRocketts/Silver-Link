@@ -6,7 +6,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-
+import { Link } from 'react-router-dom';
 import isAuth, { userType } from "../lib/isAuth";
 
 const useStyles = makeStyles((theme) => ({
@@ -33,14 +33,14 @@ const Navbar = (props) => {
   return (
     <AppBar position="fixed">
       <Toolbar>
-        <Typography variant="h6" className={classes.title}>
-          SilverLink
-        </Typography>
+      <Typography variant="h6" className={classes.title}>
+      <Link to="/" style={{ textDecoration: 'none' ,color: 'white'}}>SilverLink</Link> {}
+    </Typography>
         {isAuth() ? (
           userType() === "recruiter" ? (
             <>
               <Button color="inherit" onClick={() => handleClick("/home")}>
-                Home
+                Jobs
               </Button>
               <Button color="inherit" onClick={() => handleClick("/addjob")}>
                 Add Jobs

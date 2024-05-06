@@ -714,16 +714,26 @@ const JobApplications = (props) => {
         setApplications(response.data);
       })
       .catch((err) => {
-        console.log(err.response);
-        // console.log(err.response.data);
-        setApplications([]);
-        setPopup({
-          open: true,
-          severity: "error",
-          message: err.response.data.message,
-        });
-      });
-  };
+        if (err.response && err.response.data && err.response.data.message) {
+          // If error response is well-formed, display error message to the user
+          console.log(err.response.data.message);
+          setPopup({
+            open: true,
+            severity: "error",
+            message: err.response.data.message,
+          });
+        } else {
+          // If error response is not well-formed or unavailable, handle it gracefully
+          console.error("Error fetching data:", err);
+          setPopup({
+            open: true,
+            severity: "error",
+            message: "An unexpected error occurred while fetching data.",
+          });
+        }
+        setApplications([]); // Reset applications to an empty array or handle error state
+          });
+}
 
   return (
     <>

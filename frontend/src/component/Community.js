@@ -1,7 +1,6 @@
 import React from "react";
           import { App as SendbirdApp } from "sendbird-uikit";
           import "sendbird-uikit/dist/index.css";
-          
           const APP_ID = "704124EF-DF6C-4C5A-B4EC-389BE381B007"
           const USER_ID = localStorage.getItem("userName");
           const dob= localStorage.getItem("birthDate")

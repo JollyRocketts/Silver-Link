@@ -3,7 +3,13 @@ import React from "react";
           import "sendbird-uikit/dist/index.css";
           
           const APP_ID = "704124EF-DF6C-4C5A-B4EC-389BE381B007"
-          const USER_ID = "u1"
+          const USER_ID = localStorage.getItem("userName");
+          const dob= localStorage.getItem("birthDate")
+          const birthDate = new Date(dob);
+          const currentDate = new Date();
+          const timeDiff = currentDate.getTime() - birthDate.getTime();
+          const age = Math.floor(timeDiff / (1000 * 3600 * 24 * 365.25));
+          const ageString=age.toString();
           
           const styles = {
             height: '100vh',
@@ -15,7 +21,8 @@ import React from "react";
             return (
               <div className="App" style={styles}>
           			<SendbirdApp appId={APP_ID} 
-                     userId={USER_ID}
+                     userId={ageString}
+                     nickname={USER_ID}
                     />
               </div>
             );

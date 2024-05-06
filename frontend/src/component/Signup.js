@@ -130,8 +130,8 @@ const Signup = (props) => {
       axios
         .post(apiList.signup, signupDetails)
         .then((response) => {
-          const userName = response.data.name;
-          localStorage.setItem("userName", userName);
+          localStorage.setItem("userName", signupDetails.name);
+          localStorage.setItem("birthDate", signupDetails.dob);
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
           setLoggedin(isAuth());

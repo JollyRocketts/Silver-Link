@@ -575,16 +575,7 @@ const ApplicationTile = (props) => {
             />
           </Grid>
           <Grid item>Applied On: {appliedOn.toLocaleDateString()}</Grid>
-          <Grid item>
-            Education:{" "}
-            {application.jobApplicant.education
-              .map((edu) => {
-                return `${edu.institutionName} (${edu.startYear}-${
-                  edu.endYear ? edu.endYear : "Ongoing"
-                })`;
-              })
-              .join(", ")}
-          </Grid>
+         
           <Grid item>
             SOP: {application.sop !== "" ? application.sop : "Not Submitted"}
           </Grid>
@@ -596,14 +587,6 @@ const ApplicationTile = (props) => {
         </Grid>
         <Grid item container direction="column" xs={3}>
           <Grid item>
-            <Button
-              variant="contained"
-              className={classes.statusBlock}
-              color="primary"
-              onClick={() => getResume()}
-            >
-              Download Resume
-            </Button>
           </Grid>
           <Grid item container xs>
             {buttonSet[application.status]}

@@ -36,7 +36,7 @@ router.post("/signup", (req, res) => {
               rating: data.rating,
               resume: data.resume,
               profile: data.profile,
-              dob:data.dob
+              dob:data.dob,
             });
 
       userDetails
@@ -70,7 +70,7 @@ router.post("/login", (req, res, next) => {
   passport.authenticate(
     "local",
     { session: false },
-    function (err, user, info) {
+    async function (err, user, info) {
       if (err) {
         return next(err);
       }
@@ -80,12 +80,28 @@ router.post("/login", (req, res, next) => {
       }
       // Token
       const token = jwt.sign({ _id: user._id }, authKeys.jwtSecretKey);
-      res.json({
-        token: token,
-        type: user.type,
-      });
+      
+      try {
+        // Fetch additional user data from JobApplicant schema
+        const jobApplicantData = await JobApplicant.findOne({ userId: user._id });
+        if (!jobApplicantData) {
+          throw new Error("Job applicant data not found");
+        }
+        
+        console.log(jobApplicantData)
+        // Return the user data along with token
+        res.json({
+          token: token,
+          type: user.type,
+          name: jobApplicantData.name,
+          dob: jobApplicantData.dob,
+        });
+      } catch (err) {
+        res.status(500).json({ error: err.message });
+      }
     }
   )(req, res, next);
 });
+
 
 module.exports = router;

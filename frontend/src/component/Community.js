@@ -4,12 +4,19 @@ import React from "react";
 
           const APP_ID = "704124EF-DF6C-4C5A-B4EC-389BE381B007"
           const USER_ID = localStorage.getItem("userName");
-          const dob= localStorage.getItem("birthDate")
+          const dob= localStorage.getItem("dob")
           const birthDate = new Date(dob);
-          const currentDate = new Date();
-          const timeDiff = currentDate.getTime() - birthDate.getTime();
-          const age = Math.floor(timeDiff / (1000 * 3600 * 24 * 365.25));
-          const ageString=age.toString();
+const currentDate = new Date();
+
+// Calculate the difference in milliseconds between the current date and the date of birth
+const timeDiff = currentDate.getTime() - birthDate.getTime();
+
+// Calculate the age in years
+const age = Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 365.25));
+
+// Convert the age to a string if needed
+const ageString = age.toString();
+
           
           const styles = {
             height: '100vh',

@@ -168,9 +168,7 @@ router.get("/jobs", jwtAuth, (req, res) => {
   console.log(findParams);
   console.log(sortParams);
 
-  // Job.find(findParams).collation({ locale: "en" }).sort(sortParams);
-  // .skip(skip)
-  // .limit(limit)
+ 
 
   let arr = [
     {

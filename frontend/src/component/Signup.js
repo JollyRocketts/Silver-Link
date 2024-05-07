@@ -54,6 +54,7 @@ const Signup = (props) => {
     bio: "",
     contactNumber: "",
     dob:"",
+
   });
 
   const [phone, setPhone] = useState("");
@@ -104,9 +105,10 @@ const Signup = (props) => {
       },
     });
   };
+  
+
 
  
-
   const handleLogin = () => {
     const tmpErrorHandler = {};
    
@@ -123,6 +125,7 @@ const Signup = (props) => {
       }
     });
   
+    // Check if all fields are verified
     const verified = !Object.keys(tmpErrorHandler).some((obj) => {
       return tmpErrorHandler[obj].error;
     });
@@ -132,11 +135,12 @@ const Signup = (props) => {
       axios
         .post(apiList.signup, signupDetails)
         .then((response) => {
-          console.log(signupDetails);
-          localStorage.setItem("userName", signupDetails.name);
-          localStorage.setItem("birthDate", signupDetails.dob);
+          console.log(response)
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
+          localStorage.setItem("userName", response.data.name);
+          localStorage.setItem("dob", response.data.birthdate);
+
           setLoggedin(isAuth());
           setPopup({
             open: true,
@@ -163,64 +167,63 @@ const Signup = (props) => {
     }
   };
 
-  const handleLoginRecruiter = () => {
-    const tmpErrorHandler = {};
-    Object.keys(inputErrorHandler).forEach((obj) => {
-      if (inputErrorHandler[obj].required && inputErrorHandler[obj].untouched) {
-        tmpErrorHandler[obj] = {
-          required: true,
-          untouched: false,
-          error: true,
-          message: `${obj[0].toUpperCase() + obj.substr(1)} is required`,
-        };
-      } else {
-        tmpErrorHandler[obj] = inputErrorHandler[obj];
-      }
-    });
-    
-
-
-    const verified = !Object.keys(tmpErrorHandler).some((obj) => {
-      return tmpErrorHandler[obj].error;
-    });
-
-    if (verified) {
-    
-      const data = {
-        ...signupDetails, 
-        type: "recruiter", 
-      };
+    const handleLoginRecruiter = () => {
+      const tmpErrorHandler = {};
+      Object.keys(inputErrorHandler).forEach((obj) => {
+        if (inputErrorHandler[obj].required && inputErrorHandler[obj].untouched) {
+          tmpErrorHandler[obj] = {
+            required: true,
+            untouched: false,
+            error: true,
+            message: `${obj[0].toUpperCase() + obj.substr(1)} is required`,
+          };
+        } else {
+          tmpErrorHandler[obj] = inputErrorHandler[obj];
+        }
+      });
+      
   
-      axios
-        .post(apiList.signup, data) 
-        .then((response) => {
-          localStorage.setItem("token", response.data.token);
-          localStorage.setItem("type", response.data.type);
-          setLoggedin(isAuth());
-          setPopup({
-            open: true,
-            severity: "success",
-            message: "Logged in successfully",
-          });
-          console.log(response);
-        })
-        .catch((err) => {
-          setPopup({
-            open: true,
-            severity: "error",
-            message: err.response.data.message,
-          });
-          console.log(err.response);
-        });
-    } else {
-      setInputErrorHandler(tmpErrorHandler);
-      setPopup({
-        open: true,
-        severity: "error",
-        message: "Incorrect Input",
+      const verified = !Object.keys(tmpErrorHandler).some((obj) => {
+        return tmpErrorHandler[obj].error;
       });
-    }
-  };
+  
+      if (verified) {
+        // Construct the data object to send to the backend
+        const data = {
+          ...signupDetails, // Include signupDetails
+          type: "recruiter", // Ensure type is set to "recruiter"
+        };
+    
+        axios
+          .post(apiList.signup, data) // Pass the data object to the POST request
+          .then((response) => {
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("type", response.data.type);
+            setLoggedin(isAuth());
+            setPopup({
+              open: true,
+              severity: "success",
+              message: "Logged in successfully",
+            });
+            console.log(response);
+          })
+          .catch((err) => {
+            setPopup({
+              open: true,
+              severity: "error",
+              message: err.response.data.message,
+            });
+            console.log(err.response);
+          });
+      } else {
+        setInputErrorHandler(tmpErrorHandler);
+        setPopup({
+          open: true,
+          severity: "error",
+          message: "Incorrect Input",
+        });
+      }
+    };
   
   const handleDobChange = (dob) => {
     setSignupDetails({
@@ -228,6 +231,10 @@ const Signup = (props) => {
       dob: dob,
     });
   };
+   
+
+  
+  
  
   return loggedin ? (
     <Redirect to="/" />
@@ -303,6 +310,7 @@ const Signup = (props) => {
        
         {signupDetails.type === "applicant" ? (
           <>
+   
            <Grid item>
            <DobInput
             label="Date of Birth"

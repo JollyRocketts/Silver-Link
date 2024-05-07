@@ -78,6 +78,8 @@ const Login = (props) => {
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
+          localStorage.setItem("userName", response.data.name); // Use the correct field name returned from the server
+localStorage.setItem("dob", response.data.dob); // Use the correct field name returned from the server
           setLoggedin(isAuth());
           setPopup({
             open: true,

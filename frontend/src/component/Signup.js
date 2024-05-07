@@ -16,6 +16,7 @@ import FaceIcon from "@material-ui/icons/Face";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/material.css";
 import DobInput from "../lib/DobInput";
+
 import PasswordInput from "../lib/PasswordInput";
 import EmailInput from "../lib/EmailInput";
 import FileUploadInput from "../lib/FileUploadInput";
@@ -48,6 +49,7 @@ const Signup = (props) => {
     email: "",
     password: "",
     name: "",
+    gender:"",
     skills: [],
     profile: "",
     bio: "",
@@ -82,6 +84,12 @@ const Signup = (props) => {
       error: false,
       message: "",
     },
+    gender:{
+      required: true,
+      error: false,
+      message: "",
+
+    }
   });
 
   const handleInput = (key, value) => {
@@ -102,11 +110,14 @@ const Signup = (props) => {
       },
     });
   };
+  const [gender, setGender] = useState("");
+  const handleGenderChange = (event) => {
+    setGender(event.target.value);
+  };
 
   const handleLogin = () => {
     const tmpErrorHandler = {};
-    
-    // Validate input fields including dob
+   
     Object.keys(inputErrorHandler).forEach((obj) => {
       if (inputErrorHandler[obj].required && inputErrorHandler[obj].untouched) {
         tmpErrorHandler[obj] = {
@@ -309,6 +320,20 @@ const Signup = (props) => {
             helperText={inputErrorHandler.dob.message} // Provide helper text if needed
           />
           </Grid>
+          <Grid item>
+  <TextField
+    select
+    label="Gender"
+    value={signupDetails.gender}
+    onChange={handleGenderChange}
+    className={classes.inputBox}
+    variant="outlined"
+  >
+    <MenuItem value="male">Male</MenuItem>
+    <MenuItem value="female">Female</MenuItem>
+    <MenuItem value="other">Other</MenuItem>
+  </TextField>
+</Grid>
             <Grid item>
               <ChipInput
                 className={classes.inputBox}

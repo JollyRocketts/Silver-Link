@@ -49,7 +49,6 @@ const Signup = (props) => {
     email: "",
     password: "",
     name: "",
-    gender:"",
     skills: [],
     profile: "",
     bio: "",
@@ -84,12 +83,7 @@ const Signup = (props) => {
       error: false,
       message: "",
     },
-    gender:{
-      required: true,
-      error: false,
-      message: "",
 
-    }
   });
 
   const handleInput = (key, value) => {
@@ -110,10 +104,8 @@ const Signup = (props) => {
       },
     });
   };
-  const [gender, setGender] = useState("");
-  const handleGenderChange = (event) => {
-    setGender(event.target.value);
-  };
+
+ 
 
   const handleLogin = () => {
     const tmpErrorHandler = {};
@@ -131,7 +123,6 @@ const Signup = (props) => {
       }
     });
   
-    // Check if all fields are verified
     const verified = !Object.keys(tmpErrorHandler).some((obj) => {
       return tmpErrorHandler[obj].error;
     });
@@ -141,6 +132,7 @@ const Signup = (props) => {
       axios
         .post(apiList.signup, signupDetails)
         .then((response) => {
+          console.log(signupDetails);
           localStorage.setItem("userName", signupDetails.name);
           localStorage.setItem("birthDate", signupDetails.dob);
           localStorage.setItem("token", response.data.token);
@@ -193,14 +185,14 @@ const Signup = (props) => {
     });
 
     if (verified) {
-      // Construct the data object to send to the backend
+    
       const data = {
-        ...signupDetails, // Include signupDetails
-        type: "recruiter", // Ensure type is set to "recruiter"
+        ...signupDetails, 
+        type: "recruiter", 
       };
   
       axios
-        .post(apiList.signup, data) // Pass the data object to the POST request
+        .post(apiList.signup, data) 
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
@@ -233,9 +225,10 @@ const Signup = (props) => {
   const handleDobChange = (dob) => {
     setSignupDetails({
       ...signupDetails,
-      dob: dob, // Update dob in signupDetails
+      dob: dob,
     });
   };
+ 
   return loggedin ? (
     <Redirect to="/" />
   ) : (
@@ -315,25 +308,12 @@ const Signup = (props) => {
             label="Date of Birth"
             className={classes.inputBox}
             value={signupDetails.dob}
-            onChange={handleDobChange} // Pass handleDobChange as onChange prop
-            error={inputErrorHandler.dob.error} // Set error state if needed
-            helperText={inputErrorHandler.dob.message} // Provide helper text if needed
+            onChange={handleDobChange}
+            error={inputErrorHandler.dob.error} 
+            helperText={inputErrorHandler.dob.message} 
           />
           </Grid>
-          <Grid item>
-  <TextField
-    select
-    label="Gender"
-    value={signupDetails.gender}
-    onChange={handleGenderChange}
-    className={classes.inputBox}
-    variant="outlined"
-  >
-    <MenuItem value="male">Male</MenuItem>
-    <MenuItem value="female">Female</MenuItem>
-    <MenuItem value="other">Other</MenuItem>
-  </TextField>
-</Grid>
+   
             <Grid item>
               <ChipInput
                 className={classes.inputBox}

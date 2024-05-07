@@ -29,12 +29,6 @@ let schema = new mongoose.Schema(
     profile: {
       type: String,
     },
-    gender: {
-      type: String,
-      enum: ['male', 'female', 'other'],
-      required: true
-    }
-
   },
   { collation: { locale: "en" } }
 );

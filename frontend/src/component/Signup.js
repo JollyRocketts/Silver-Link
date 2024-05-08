@@ -205,6 +205,7 @@ const Signup = (props) => {
               severity: "success",
               message: "Logged in successfully",
             });
+            window.location.reload();
             console.log(response);
           })
           .catch((err) => {

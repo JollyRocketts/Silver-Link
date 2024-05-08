@@ -19,6 +19,8 @@ import MessagePopup from "./lib/MessagePopup";
 import isAuth, { userType } from "./lib/isAuth";
 import Community from "./component/Community";
 import Arcade from "./component/Arcade";
+import Healthcare from "./component/Healthcare";
+import Linkedin from "./component/Linkedin";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -78,6 +80,12 @@ function App() {
               </Route>
               <Route exact path="/community">
                 <Community />
+              </Route>
+              <Route exact path="/linkedin">
+                <Linkedin/>
+              </Route>
+              <Route exact path="/healthcare">
+                <Healthcare />
               </Route>
               <Route exact path="/arcade">
                 <Arcade />

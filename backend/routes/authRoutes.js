@@ -93,41 +93,4 @@ router.post("/login", async (req, res, next) => {
 });
 
 
-router.post("/login", (req, res, next) => {
-  passport.authenticate(
-    "local",
-    { session: false },
-    async function (err, user, info) {
-      if (err) {
-        return next(err);
-      }
-      if (!user) {
-        res.status(401).json(info);
-        return;
-      }
-      // Token
-      const token = jwt.sign({ _id: user._id }, authKeys.jwtSecretKey);
-      
-      try {
-        // Fetch additional user data from JobApplicant schema
-        const jobApplicantData = await JobApplicant.findOne({ userId: user._id });
-        if (!jobApplicantData) {
-          throw new Error("Job applicant data not found");
-        }
-        
-        // Return the user data along with token
-        res.json({
-          token: token,
-          type: user.type,
-          name: jobApplicantData.name,
-          dob: jobApplicantData.dob,
-        });
-      } catch (err) {
-        res.status(500).json({ error: err.message });
-      }
-    }
-  )(req, res, next);
-});
-
-
 module.exports = router;

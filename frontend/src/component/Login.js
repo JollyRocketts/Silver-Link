@@ -86,6 +86,7 @@ localStorage.setItem("dob", response.data.dob); // Use the correct field name re
             severity: "success",
             message: "Logged in successfully",
           });
+          window.location.reload();
           console.log(response);
         })
         .catch((err) => {

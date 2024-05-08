@@ -75,6 +75,9 @@ const Navbar = (props) => {
               >
                 Community
               </Button>
+              <Button color="inherit" onClick={() => handleClick("/arcade")}>
+                Arcade
+              </Button>
               <Button color="inherit" onClick={() => handleClick("/profile")}>
                 Profile
               </Button>

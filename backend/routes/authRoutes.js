@@ -72,18 +72,24 @@ router.post("/login", async (req, res, next) => {
       const token = jwt.sign({ _id: user._id }, authKeys.jwtSecretKey);
 
       try {
-        // Fetch additional user data from JobApplicant schema
-        const jobApplicantData = await JobApplicant.findOne({ userId: user._id });
-        if (!jobApplicantData) {
-          throw new Error("Job applicant data not found");
+        let userDetails;
+        // Fetch additional user data based on user type
+        if (user.type === "recruiter") {
+          userDetails = await Recruiter.findOne({ userId: user._id });
+        } else {
+          userDetails = await JobApplicant.findOne({ userId: user._id });
+        }
+
+        if (!userDetails) {
+          throw new Error("User data not found");
         }
 
         // Return the user data along with token
         res.json({
           token: token,
           type: user.type,
-          name: jobApplicantData.name,
-          dob: jobApplicantData.dob,
+          name: userDetails.name,
+          dob: userDetails.dob,
         });
       } catch (err) {
         res.status(500).json({ error: err.message });
@@ -91,6 +97,7 @@ router.post("/login", async (req, res, next) => {
     }
   )(req, res, next);
 });
+
 
 
 module.exports = router;

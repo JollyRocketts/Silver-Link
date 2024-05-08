@@ -9,62 +9,89 @@ const Recruiter = require("../db/Recruiter");
 
 const router = express.Router();
 
-router.post("/signup", (req, res) => {
+router.post("/signup", async (req, res) => {
   const data = req.body;
-  let user = new User({
-    email: data.email,
-    password: data.password,
-    type: data.type,
-  });
-
-  user
-    .save()
-    .then(() => {
-      const userDetails =
-        user.type == "recruiter"
-          ? new Recruiter({
-              userId: user._id,
-              name: data.name,
-              contactNumber: data.contactNumber,
-              bio: data.bio,
-            })
-          : new JobApplicant({
-              userId: user._id,
-              name: data.name,
-              education: data.education,
-              skills: data.skills,
-              rating: data.rating,
-              resume: data.resume,
-              profile: data.profile,
-              dob:data.dob,
-            });
-
-      userDetails
-        .save()
-        .then(() => {
-          // Token
-          const token = jwt.sign({ _id: user._id }, authKeys.jwtSecretKey);
-          res.json({
-            token: token,
-            type: user.type,
-          });
-        })
-        .catch((err) => {
-          user
-            .delete()
-            .then(() => {
-              res.status(400).json(err);
-            })
-            .catch((err) => {
-              res.json({ error: err });
-            });
-          err;
-        });
-    })
-    .catch((err) => {
-      res.status(400).json(err);
+  try {
+    const user = new User({
+      email: data.email,
+      password: data.password,
+      type: data.type,
     });
+
+    await user.save();
+
+    let userDetails;
+    if (user.type === "recruiter") {
+      userDetails = new Recruiter({
+        userId: user._id,
+        name: data.name,
+        contactNumber: data.contactNumber,
+        bio: data.bio,
+      });
+    } else {
+      userDetails = new JobApplicant({
+        userId: user._id,
+        name: data.name,
+        education: data.education,
+        skills: data.skills,
+        rating: data.rating,
+        resume: data.resume,
+        profile: data.profile,
+        dob: data.dob,
+      });
+    }
+
+    await userDetails.save();
+
+    const token = jwt.sign({ _id: user._id }, authKeys.jwtSecretKey);
+
+    res.json({
+      token: token,
+      type: user.type,
+      name: userDetails.name,
+      dob: userDetails.dob,
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
+
+router.post("/login", async (req, res, next) => {
+  passport.authenticate(
+    "local",
+    { session: false },
+    async function (err, user, info) {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        res.status(401).json(info);
+        return;
+      }
+      // Token
+      const token = jwt.sign({ _id: user._id }, authKeys.jwtSecretKey);
+
+      try {
+        // Fetch additional user data from JobApplicant schema
+        const jobApplicantData = await JobApplicant.findOne({ userId: user._id });
+        if (!jobApplicantData) {
+          throw new Error("Job applicant data not found");
+        }
+
+        // Return the user data along with token
+        res.json({
+          token: token,
+          type: user.type,
+          name: jobApplicantData.name,
+          dob: jobApplicantData.dob,
+        });
+      } catch (err) {
+        res.status(500).json({ error: err.message });
+      }
+    }
+  )(req, res, next);
+});
+
 
 router.post("/login", (req, res, next) => {
   passport.authenticate(
@@ -88,7 +115,6 @@ router.post("/login", (req, res, next) => {
           throw new Error("Job applicant data not found");
         }
         
-        console.log(jobApplicantData)
         // Return the user data along with token
         res.json({
           token: token,

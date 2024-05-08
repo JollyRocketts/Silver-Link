@@ -106,8 +106,6 @@ const Signup = (props) => {
     });
   };
   
-
-
  
   const handleLogin = () => {
     const tmpErrorHandler = {};
@@ -139,7 +137,7 @@ const Signup = (props) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
           localStorage.setItem("userName", response.data.name);
-          localStorage.setItem("dob", response.data.birthdate);
+          localStorage.setItem("dob", response.data.dob);
 
           setLoggedin(isAuth());
           setPopup({
@@ -199,6 +197,8 @@ const Signup = (props) => {
           .then((response) => {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("type", response.data.type);
+            localStorage.setItem("userName", response.data.name);
+            localStorage.setItem("dob", response.data.dob);
             setLoggedin(isAuth());
             setPopup({
               open: true,

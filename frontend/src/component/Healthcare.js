@@ -1,11 +1,20 @@
 import React from 'react'
+import './Healthcare.css';
 
-const Healthcare = () => {
+const Robot = () => {
   return (
-    <div>
-      <h1>HealthCare</h1>
+    <div className="robot-container">
+      <div className="robot">
+        <div className="face"></div>
+        <div className="head"></div>
+        <div className="body"></div>
+        <div className="left-arm"></div>
+        <div className="right-arm"></div>
+        <div className="right-eye"></div>
+        <div className="left-eye"></div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Healthcare
+export default Robot;

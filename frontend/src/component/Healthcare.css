@@ -126,4 +126,16 @@ body {
       transform: translatey(-40px) rotatez(45deg);
     }
   }
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+  }
   
+  .robot-container {
+    display: inline-block; /* Ensures it only takes up space required by the robot */
+    margin-bottom: 20px; /* Adjust this value to your preference */
+  }

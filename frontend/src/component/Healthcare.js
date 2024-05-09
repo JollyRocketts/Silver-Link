@@ -1,5 +1,6 @@
 import React from 'react'
-import './Healthcare.css';
+import './Healthcare.css'
+import { Grid, Typography } from "@material-ui/core";
 
 const Robot = () => {
   return (
@@ -17,4 +18,19 @@ const Robot = () => {
   );
 };
 
-export default Robot;
+const App = () => {
+  return (
+      <div className="container">
+        <Grid container direction="column" alignItems="center" spacing={2}>
+          <Grid item>
+            <Robot />
+          </Grid>
+          <Grid item>
+          <Typography variant="h5"><a href="https://elderly-health.netlify.app">Health First</a></Typography>
+          </Grid>
+        </Grid>
+      </div>
+  );
+}
+
+export default App;

@@ -26,7 +26,7 @@ const games = [
 
 const Arcade = () => {
   const handleClick = (game) => {
-
+ 
     if (game.link) {
       window.open(game.link, '_blank');
     }
